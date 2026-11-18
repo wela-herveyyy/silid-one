@@ -2,25 +2,147 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #111827;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scrollbar-gutter: stable;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #ffffff;
+  color: #111827;
+  font-family: var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+@keyframes dropdownEnter {
+  from {
+    opacity: 0;
+    transform: translateY(4px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-dropdown-enter {
+  animation: dropdownEnter 150ms cubic-bezier(0, 0, 0.2, 1) forwards;
+}
+
+@keyframes panelSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-panel-enter {
+  animation: panelSlideIn 200ms cubic-bezier(0, 0, 0.2, 1) forwards;
+}
+
+/* Exact 1:1 ClassCard & ClassCardPlayful & ExternalCourseCardPlayful CSS from Vue */
+.class-card {
+  overflow: hidden;
+  border-radius: 1.25rem;
+}
+
+.class-card-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.class-card-action:hover {
+  background: rgba(255, 255, 255, 0.32);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.cls-card {
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cls-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--cls-color) !important;
+}
+
+.cls-card:hover .cls-arrow {
+  background-color: var(--cls-color) !important;
+  color: #ffffff !important;
+}
+
+.cls-card:hover .cls-arrow-icon {
+  transform: translateX(2px);
+}
+
+.cls-card-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #9a3412;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12);
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cls-card-action:hover {
+  background: #ffffff;
+  color: var(--cls-color);
+  box-shadow: inset 0 0 0 1px var(--cls-color);
+  transform: translateY(-1px);
+}
+
+.ext-card {
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ext-card:hover {
+  transform: translateY(-4px);
+  border-color: #93c5fd;
+}
+
+.ext-card:hover .ext-arrow {
+  background-color: #3b82f6;
+  color: #ffffff;
+}
+
+.ext-card:hover .ext-arrow-icon {
+  transform: translateX(2px);
+}
+
+/* TipTap HTML Text Editor placeholder & baseline focus behavior */
+.ProseMirror {
+  outline: none;
+}
+
+.ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #9ca3af;
+  pointer-events: none;
+  height: 0;
 }

@@ -1,0 +1,55 @@
+import type {
+  ActionSession,
+  AuthResult,
+  AuthSession,
+  AuthUser,
+  SignInInput,
+  SignUpInput,
+} from "@/lib/entities/auth.type";
+import {
+  getSession as getSessionUseCase,
+  getSessionFromHeaders as getSessionFromHeadersUseCase,
+} from "@/lib/domain/usecases/auth/get_session.usecase";
+import { signIn as signInUseCase } from "@/lib/domain/usecases/auth/sign_in.usecase";
+import { signOut as signOutUseCase } from "@/lib/domain/usecases/auth/sign_out.usecase";
+import { signUp as signUpUseCase } from "@/lib/domain/usecases/auth/sign_up.usecase";
+import { getUserRole } from "@/lib/domain/usecases/users/get_user_role.usecase";
+
+export async function getSession(): Promise<AuthSession | null> {
+  return getSessionUseCase();
+}
+
+export async function getSessionFromHeaders(
+  requestHeaders: Headers,
+): Promise<AuthSession | null> {
+  return getSessionFromHeadersUseCase(requestHeaders);
+}
+
+/** Authentication for protected actions — resolves Better Auth session + DB role. */
+export async function auth(): Promise<ActionSession | null> {
+  const session = await getSession();
+  if (!session) return null;
+
+  const role = await getUserRole(session.user.id);
+  if (!role) return null;
+
+  return {
+    user: {
+      ...session.user,
+      role,
+    },
+    expired: false,
+  };
+}
+
+export async function signIn(input: SignInInput): Promise<AuthResult<AuthUser>> {
+  return signInUseCase(input);
+}
+
+export async function signUp(input: SignUpInput): Promise<AuthResult<AuthUser>> {
+  return signUpUseCase(input);
+}
+
+export async function signOut(): Promise<AuthResult> {
+  return signOutUseCase();
+}
